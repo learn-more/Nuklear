@@ -20,33 +20,19 @@ jobs:
     - name: build example
       run: make -C example
 
-  build_msvc:
-    env:
-      vcpkgGitCommitId: 6f7ffeb18f99796233b958aaaf14ec7bd4fb64b2
-      VCPKG_DEFAULT_TRIPLET: ${{ matrix.arch }}-windows
+  build_msvc_demo:
 
+    runs-on: windows-latest
     strategy:
       matrix:
         arch: [x86, x64]
         define: ['', '-DINCLUDE_ALL']
-    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v3
     - uses: ilammy/msvc-dev-cmd@v1
       with:
         arch: ${{ matrix.arch }}
-    - uses: lukka/run-vcpkg@v10
-      with:
-        vcpkgDirectory: '${{ runner.workspace }}/b/vcpkg'
-        vcpkgGitCommitId: ${{ env.vcpkgGitCommitId }}
-        runVcpkgInstall: true
-        appendedCacheKey: ${{ matrix.arch }}
-      env:
-        VCPKG_INSTALLED_DIR: ${{ github.workspace }}/vcpkg_installed
-    - name: List ${{ github.workspace }}/vcpkg_installed after build
-      run: find '${{ github.workspace }}'/vcpkg_installed
-      shell: bash
 
     - name: Build gdi
       working-directory: demo/gdi
@@ -71,3 +57,32 @@ jobs:
     - name: Build d3d12
       working-directory: demo/d3d12
       run: ./build.bat ${{ matrix.define }}
+
+
+  build_msvc_examples:
+    env:
+      vcpkgGitCommitId: 6f7ffeb18f99796233b958aaaf14ec7bd4fb64b2
+      VCPKG_DEFAULT_TRIPLET: ${{ matrix.arch }}-windows
+
+    strategy:
+      matrix:
+        arch: [x86, x64]
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: ${{ matrix.arch }}
+    - uses: lukka/run-vcpkg@v10
+      with:
+        vcpkgDirectory: '${{ runner.workspace }}/b/vcpkg'
+        vcpkgGitCommitId: ${{ env.vcpkgGitCommitId }}
+        runVcpkgInstall: true
+        appendedCacheKey: ${{ matrix.arch }}
+      env:
+        VCPKG_INSTALLED_DIR: ${{ github.workspace }}/vcpkg_installed
+
+    - name: Build examples
+      working-directory: example
+      run: ./build.bat
