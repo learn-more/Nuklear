@@ -40,8 +40,8 @@ jobs:
       with:
         vcpkgGitCommitId: ${{ env.vcpkgGitCommitId }}
         runVcpkgInstall: true
-    - name: List $RUNNER_WORKSPACE/vcpkg after build
-      run: find $RUNNER_WORKSPACE/vcpkg
+    - name: List $RUNNER_WORKSPACE\\vcpkg after build
+      run: find $RUNNER_WORKSPACE\\vcpkg
       shell: bash
 
     - name: Build gdi
