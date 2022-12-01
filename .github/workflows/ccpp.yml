@@ -42,6 +42,7 @@ jobs:
         vcpkgDirectory: '${{ runner.workspace }}/b/vcpkg'
         vcpkgGitCommitId: ${{ env.vcpkgGitCommitId }}
         runVcpkgInstall: true
+        appendedCacheKey: ${{ matrix.arch }}
     - name: List . after build
       run: find .
       shell: bash
