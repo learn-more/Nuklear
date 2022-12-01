@@ -45,7 +45,7 @@ jobs:
       env:
         VCPKG_INSTALLED_DIR: ${{ github.workspace }}/vcpkg_installed
     - name: List ${{ github.workspace }}/vcpkg_installed after build
-      run: find ${{ github.workspace }}/vcpkg_installed
+      run: find '${{ github.workspace }}'/vcpkg_installed
       shell: bash
 
     - name: Build gdi
