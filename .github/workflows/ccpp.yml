@@ -37,11 +37,12 @@ jobs:
       with:
         arch: ${{ matrix.arch }}
     - uses: lukka/run-vcpkg@v10
+      id: runvcpkg
       with:
         vcpkgGitCommitId: ${{ env.vcpkgGitCommitId }}
         runVcpkgInstall: true
-    - name: List $RUNNER_WORKSPACE\\vcpkg after build
-      run: find $RUNNER_WORKSPACE\\vcpkg
+    - name: List ${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }} after build
+      run: find ${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}
       shell: bash
 
     - name: Build gdi
