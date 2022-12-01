@@ -41,8 +41,8 @@ jobs:
       with:
         vcpkgGitCommitId: ${{ env.vcpkgGitCommitId }}
         runVcpkgInstall: true
-    - name: List ${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }} after build
-      run: find ${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}
+    - name: List . after build
+      run: find .
       shell: bash
 
     - name: Build gdi
