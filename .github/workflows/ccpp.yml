@@ -21,6 +21,10 @@ jobs:
       run: make -C example
 
   build_msvc:
+    env:
+      vcpkgGitCommitId: 6f7ffeb18f99796233b958aaaf14ec7bd4fb64b2
+      VCPKG_DEFAULT_TRIPLET: ${{ matrix.arch }}-windows
+
     strategy:
       matrix:
         arch: [x86, x64]
@@ -32,6 +36,13 @@ jobs:
     - uses: ilammy/msvc-dev-cmd@v1
       with:
         arch: ${{ matrix.arch }}
+    - uses: lukka/run-vcpkg@v10
+      with:
+        vcpkgGitCommitId: ${{ env.vcpkgGitCommitId }}
+        runVcpkgInstall: true
+    - name: List $RUNNER_WORKSPACE/vcpkg after build
+      run: find $RUNNER_WORKSPACE/vcpkg
+      shell: bash
 
     - name: Build gdi
       working-directory: demo/gdi
